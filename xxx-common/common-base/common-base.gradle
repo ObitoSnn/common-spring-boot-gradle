@@ -1,0 +1,11 @@
+/* 子模块项目名，jar名 */
+archivesBaseName = 'common-base'
+
+jar.enabled = true
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}

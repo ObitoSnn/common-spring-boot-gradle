@@ -1,0 +1,59 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.5.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
+}
+
+allprojects {
+    group = 'com.obitosnn'
+    /* 项目版本 */
+    version = '0.0.1'
+    apply from: rootProject.file("common.gradle")
+}
+
+//容器模块名字
+def parentProjects = Arrays.asList('xxx-common', 'xxx-service')
+
+/* 所有子项目的通用配置 */
+subprojects {
+    if (parentProjects.contains(getName())) {
+        return
+    }
+    /* java是Gradle的核心插件，是内置的，内置插件不需要配置依赖路径 */
+    apply plugin: 'java'
+    /* 注意gradle插件不再自动应用，所以这里需要指定 */
+    apply plugin: 'org.springframework.boot'
+    /* 依赖管理，用来传递spring的依赖 */
+    apply plugin: 'io.spring.dependency-management'
+    if (!rootProject.ext.apps.contains(getName())) {
+        /* 需要org.springframework.boot插件 不需要打包成可执行的jar*/
+        bootJar.enabled = false
+    }
+    /* 指定jdk版本 */
+    sourceCompatibility = JavaVersion.VERSION_1_8
+
+    /* java编译的时候缺省状态下会因为中文字符而失败 */
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "url 'https://maven.aliyun.com/repository/public'"
+        }
+        mavenCentral()
+    }
+    /* 添加通用依赖 */
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        // 解决lombok找不到getter、setter编译报错
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        // implementation fileTree(dir: rootProject.rootDir.absolutePath + '\\libs', includes: ['**/*.jar'])
+
+
+        // 给指定容器模块的子模块添加依赖
+        if (this.ext.module.common.contains(getName())) {
+            // implementation fileTree(dir: "${rootDir}\\libs", includes: ['**/*.jar'])
+        }
+    }
+}
+

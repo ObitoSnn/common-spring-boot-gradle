@@ -1,0 +1,27 @@
+rootProject.name = 'common-spring-boot-gradle'
+include 'xxx-service'
+include 'xxx-service:service-system'
+include 'xxx-common'
+include 'xxx-common:common-base'
+
+/**
+ * 递归检查build.gradle文件是否根据模块名生成
+ * @param dirs
+ */
+def assertProjectBuildFile(Set<ProjectDescriptor> dirs) {
+    if (dirs.size() == 0) {
+        return
+    }
+    dirs.each { project ->
+        project.buildFileName = "${project.name}.gradle"
+        assert project.projectDir.isDirectory()
+        assert project.buildFile.exists()
+        assert project.buildFile.isFile()
+    }
+    if (dirs.children.size() > 0) {
+        dirs.children.each { project ->
+            assertProjectBuildFile(project)
+        }
+    }
+}
+assertProjectBuildFile(rootProject.children)

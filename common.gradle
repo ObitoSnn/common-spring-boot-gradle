@@ -1,0 +1,7 @@
+ext {
+    apps = ['service-system'] as List
+
+    module = [
+            'common': ['common-base'] as List
+    ]
+}
