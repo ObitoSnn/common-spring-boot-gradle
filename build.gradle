@@ -1,14 +1,15 @@
 plugins {
     id 'org.springframework.boot' version '2.3.5.RELEASE' apply false
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
 }
 
 allprojects {
     group = 'com.obitosnn'
     /* 项目版本 */
     version = '0.0.1'
-    apply from: rootProject.file("common.gradle")
+    apply from: file("${rootDir}/common.gradle")
 }
+
+apply from: file("${rootDir}/task.gradle")
 
 //容器模块名字
 def parentProjects = Arrays.asList('xxx-common', 'xxx-service')
@@ -24,12 +25,12 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     /* 依赖管理，用来传递spring的依赖 */
     apply plugin: 'io.spring.dependency-management'
-    if (!rootProject.ext.apps.contains(getName())) {
+    if (!ext.apps.contains(getName())) {
         /* 需要org.springframework.boot插件 不需要打包成可执行的jar*/
         bootJar.enabled = false
     }
     /* 指定jdk版本 */
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
 
     /* java编译的时候缺省状态下会因为中文字符而失败 */
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
@@ -55,44 +56,4 @@ subprojects {
             // implementation fileTree(dir: "${rootDir}\\libs", includes: ['**/*.jar'])
         }
     }
-}
-
-task printTree {
-    println '+--  ' + rootProject.name
-    printProjectTree(rootProject.childProjects)
-}
-
-/**
- * 打印工程目录树
- *
- * @param dirs childProjects，key:project的名称，value:project对象
- */
-def printProjectTree(Map<String, Project> dirs) {
-    if (dirs.size() > 0) {
-        dirs.values().forEach(project -> {
-            boolean hasChild = project.childProjects.values().size() > 0
-            def startStr = !hasChild ? '\\--' : '+--'
-            println generatorTreeNodePrefix(project.depth, startStr) + project.name
-            if (hasChild) {
-                printProjectTree(project.childProjects)
-            }
-        })
-    }
-}
-
-/**
- * 自动根据层级深度生成占位符
- *
- * @param depth project深度
- */
-def generatorTreeNodePrefix(int depth, String startStr) {
-    def s = '|   '
-    for (int i = 0; i < depth; i++) {
-        if (i == 0) {
-            s += startStr
-        } else {
-            s += '--'
-        }
-    }
-    return s + ' '
 }
