@@ -56,4 +56,8 @@ subprojects {
             // implementation fileTree(dir: "${rootDir}\\libs", includes: ['**/*.jar'])
         }
     }
+
+    test {
+        useJUnitPlatform()
+    }
 }
