@@ -39,3 +39,15 @@ def generatorTreeNodePrefix(int depth, String startStr) {
     }
     return s + ' '
 }
+
+/**
+ * 复制mapper文件
+ */
+task copySqlmappers(type: Copy) {
+    doLast {
+        from "${projectDir}/src/main/java"
+        include "**/*.xml"
+        into "${buildDir}/classes/java/main"
+        includeEmptyDirs = false
+    }
+}

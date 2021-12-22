@@ -1,8 +1,5 @@
 archivesBaseName = 'service-system'
 
-jar.enabled = true
-bootJar.enabled = true
-
 dependencies {
     /* 子模块之间的依赖 */
     implementation project(':xxx-common:common-base')
@@ -12,21 +9,3 @@ dependencies {
     implementation 'com.alibaba:druid-spring-boot-starter:1.2.6'
     implementation 'com.baomidou:mybatis-plus-boot-starter:3.4.1'
 }
-
-//sourceSets.main.resources.srcDirs = ['src/main/java', 'src/main/resources']
-
-//task cleanSqlmaps(type: Delete) {
-//    def files = fileTree("${buildDir}/classes/java", {
-//        include "**/*.xml"
-//    })
-//    delete files
-//}
-
-task copySqlmaps(type: Copy) {
-    from "${projectDir}/src/main/java"
-    include "**/*.xml"
-    into "${buildDir}/classes/java/main"
-    includeEmptyDirs = false
-}
-
-processResources.dependsOn copySqlmaps
