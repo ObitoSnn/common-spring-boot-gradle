@@ -57,6 +57,15 @@ subprojects {
         }
     }
 
+    /*
+        引入pom
+     */
+    /*dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1'
+        }
+    }*/
+
     processResources.dependsOn copySqlmappers
 
     test {
