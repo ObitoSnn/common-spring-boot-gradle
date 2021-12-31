@@ -38,7 +38,7 @@ subprojects {
     repositories {
         mavenLocal()
         maven {
-            url "url 'https://maven.aliyun.com/repository/public'"
+            url 'https://maven.aliyun.com/repository/public'
         }
         mavenCentral()
     }
