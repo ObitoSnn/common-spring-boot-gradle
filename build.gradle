@@ -32,6 +32,11 @@ subprojects {
     /* 指定jdk版本 */
     sourceCompatibility = JavaVersion.VERSION_1_8.toString()
 
+    // If you are using an additional-spring-configuration-metadata.json file,
+    // the compileJava task should be configured to depend on the processResources task
+    // 支持 additional-spring-configuration-metadata.json 文件
+    compileJava.inputs.files(processResources)
+
     /* java编译的时候缺省状态下会因为中文字符而失败 */
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
