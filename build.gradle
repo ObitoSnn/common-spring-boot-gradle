@@ -7,9 +7,9 @@ allprojects {
     /* 项目版本 */
     version = '0.0.1'
     apply from: file("${rootDir}/common.gradle")
+    apply from: file("${rootDir}/task.gradle")
 }
 
-apply from: file("${rootDir}/task.gradle")
 
 //容器模块名字
 def parentProjects = Arrays.asList('xxx-common', 'xxx-service')
@@ -70,8 +70,6 @@ subprojects {
             mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1'
         }
     }*/
-
-    processResources.dependsOn copySqlmappers
 
     test {
         useJUnitPlatform()
